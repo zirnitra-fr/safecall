@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.zirnitra</groupId>
+    <artifactId>safecall</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>SafeCall</name>
+    <description>SafeCall is a lightweight library providing an mechanism similar to the Elvis Operator for your Java projects.</description>
+
+    <developers>
+        <developer>
+            <id>zirnitra-fr</id>
+            <name>Zirnitra</name>
+            <email>contact@zirnitra.Fr</email>
+            <url>lhttps://github.com/zirnitra-fr</url>
+            <organization>Zirnitra</organization>
+            <organizationUrl>https://zirnitra.fr</organizationUrl>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

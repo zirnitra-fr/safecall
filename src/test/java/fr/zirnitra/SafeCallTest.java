@@ -1,0 +1,183 @@
+package fr.zirnitra;
+import fr.zirnitra.model.Address;
+import fr.zirnitra.model.Person;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class SafeCallTest {
+    @Test
+    void ofWithValidObject() {
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        SafeCall.SafeCallChain<Person> chain = SafeCall.of(person);
+        assertEquals(person, chain.get());
+    }
+
+    @Test
+    void ofWithNullObject() {
+        SafeCall.SafeCallChain<Person> chain = SafeCall.of(null);
+        assertNull(chain.get());
+    }
+
+    @Test
+    void callWithValidFunction() {
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        SafeCall.SafeCallChain<Address> chain = SafeCall.of(person).call(Person::getAddress);
+        assertEquals(person.getAddress(), chain.get());
+    }
+
+    @Test
+    void callWithNullFunctionResult() {
+        Person person = new Person();
+        SafeCall.SafeCallChain<Address> chain = SafeCall.of(person).call(Person::getAddress);
+        assertNull(chain.get());
+    }
+
+    @Test
+    void getOptionalWithNonNullValue() {
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        SafeCall.SafeCallChain<Person> chain = SafeCall.of(person);
+        assertTrue(chain.getOptional().isPresent());
+    }
+
+    @Test
+    void getOptionalWithNullValue() {
+        SafeCall.SafeCallChain<Person> chain = SafeCall.of(null);
+        assertFalse(chain.getOptional().isPresent());
+    }
+
+    @Test
+    void getOrDefaultWithNonNullValue() {
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        SafeCall.SafeCallChain<Person> chain = SafeCall.of(person);
+        assertEquals(person, chain.getOrDefault(new Person()));
+    }
+
+    @Test
+    void getOrDefaultWithNullValue() {
+        SafeCall.SafeCallChain<Person> chain = SafeCall.of(null);
+        Person defaultPerson = new Person();
+        assertEquals(defaultPerson, chain.getOrDefault(defaultPerson));
+    }
+
+    @Test
+    void chainWithValidInput() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        assertEquals("Springfield", chain.on(person).get());
+    }
+
+    @Test
+    void chainWithNullInput() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        assertNull(chain.on(null).get());
+    }
+
+    @Test
+    void chainWithIntermediateNull() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Person person = new Person();
+        assertNull(chain.on(person).get());
+    }
+
+    @Test
+    void chainWithDefaultValue() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Person person = new Person();
+        assertEquals("Unknown", chain.on(person).getOrDefault("Unknown"));
+    }
+
+    @Test
+    void chainAsFunction() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Function<Person, String> cityExtractor = chain.asFunction();
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        assertEquals("Springfield", cityExtractor.apply(person));
+    }
+
+    @Test
+    void chainAsFunctionWithNullInput() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Function<Person, String> cityExtractor = chain.asFunction();
+        assertNull(cityExtractor.apply(null));
+    }
+
+    @Test
+    void chainAsFunctionWithIntermediateNull() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Function<Person, String> cityExtractor = chain.asFunction();
+        Person person = new Person();
+        assertNull(cityExtractor.apply(person));
+    }
+
+    @Test
+    void chainResultOptional() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Person person = new Person(new Address("123 Main St", "Springfield"));
+        Optional<String> city = chain.on(person).getOptional();
+        assertTrue(city.isPresent());
+        assertEquals("Springfield", city.get());
+    }
+
+    @Test
+    void chainResultOptionalEmpty() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        Person person = new Person();
+        Optional<String> city = chain.on(person).getOptional();
+        assertFalse(city.isPresent());
+    }
+
+    @Test
+    void chainInStream() {
+        SafeCall.PreparedSafeCallChain<Person, String> chain = SafeCall.prepare(Person.class)
+                .call(Person::getAddress)
+                .call(Address::getCity);
+
+        List<Person> people = Arrays.asList(
+                new Person(new Address("123 Main St", "Springfield")),
+                new Person(new Address("456 Secondary St", "Los Angeles")),
+                new Person()
+        );
+
+        List<String> cities = people.stream()
+                .map(chain.asFunction())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList("Springfield", "Los Angeles"), cities);
+    }
+}
