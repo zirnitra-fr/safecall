@@ -30,6 +30,9 @@ import java.util.function.Function;
  */
 public class SafeCall {
 
+    private SafeCall() {
+    }
+
     /**
      * Creates a SafeCallChain on a given object to check for null values on consecutive method calls.<br>
      * After calling this method, you can, optionally, add method calls with {@link SafeCallChain#call(Function)}.<br>
