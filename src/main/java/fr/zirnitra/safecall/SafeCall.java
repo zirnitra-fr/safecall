@@ -1,4 +1,4 @@
-package fr.zirnitra;
+package fr.zirnitra.safecall;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -183,10 +183,34 @@ public class SafeCall {
          * Converts this chain to a reusable function.<br />
          * This is useful when you want to use the chain in a stream for example.
          *
-         * @return A function that applies this chain to any input
+         * @return A function that applies this chain to any input, returning the result or null.
          */
         public Function<T, R> asFunction() {
             return composedFunction;
+        }
+
+        /**
+         * Converts this chain to a reusable function.<br />
+         * This is useful when you want to use the chain in a stream for example.
+         *
+         * @return A function that applies this chain to any input and returns an Optional result
+         */
+        public Function<T, Optional<R>> asFunctionOptional() {
+            return input -> Optional.ofNullable(composedFunction.apply(input));
+        }
+
+        /**
+         * Converts this chain to a reusable function.<br />
+         * This is useful when you want to use the chain in a stream for example.
+         *
+         * @param defaultValue The default value to return if the result is null
+         * @return A function that applies this chain to any input and returns the result or default value
+         */
+        public Function<T, R> asFunction(R defaultValue) {
+            return input -> {
+                R result = composedFunction.apply(input);
+                return result != null ? result : defaultValue;
+            };
         }
     }
 

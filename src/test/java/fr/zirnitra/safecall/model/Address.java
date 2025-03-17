@@ -1,4 +1,4 @@
-package fr.zirnitra.model;
+package fr.zirnitra.safecall.model;
 
 public class Address {
     private final String street;
