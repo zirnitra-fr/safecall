@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 /**
  * Allows to initiate a SafeCall on an object and the methods to call on it and on the objects returned by those calls.
- * <br />
+ * <br>
  * There are two options :
  * <ul>
  *     <li>{@link SafeCall#of(Object)} to create a chain of calls on a single object</li>
@@ -23,7 +23,7 @@ import java.util.function.Function;
  * </ul>
  *
  * Each {@link SafeCallChain#call(Function)}, {@link PreparedSafeCallChain#call(Function)}
- * and {@link PreparedSafeCallChain#on(Object)} create a new instances of those classes.<br />
+ * and {@link PreparedSafeCallChain#on(Object)} create a new instances of those classes.<br>
  * {@link PreparedSafeCallChain} should be used on lists of objects.
  *
  * @author Victor Duda (Zirnitra)
@@ -31,9 +31,9 @@ import java.util.function.Function;
 public class SafeCall {
 
     /**
-     * Creates a SafeCallChain on a given object to check for null values on consecutive method calls.<br />
-     * After calling this method, you can, optionally, add method calls with {@link SafeCallChain#call(Function)}.<br />
-     * <br />
+     * Creates a SafeCallChain on a given object to check for null values on consecutive method calls.<br>
+     * After calling this method, you can, optionally, add method calls with {@link SafeCallChain#call(Function)}.<br>
+     * <br>
      * Once your chain is ready, you can get the final value with :
      * <ul>
      *     <li>{@link SafeCallChain#get()} to get the last object of the chain or null if one of the objects in the
@@ -54,12 +54,12 @@ public class SafeCall {
 
     /**
      * Initiates a PreparedSafeCallChain for a given class which can be used multiple times on
-     * instances of that class.<br />
+     * instances of that class.<br>
      * After calling this method, you should call {@link PreparedSafeCallChain#call(Function)}
-     * to generate the chain of calls.<br />
+     * to generate the chain of calls.<br>
      * Once you're done, you can use {@link PreparedSafeCallChain#on(Object)} to apply the chain
-     * to an object or {@link PreparedSafeCallChain#asFunction()} to get a reusable function.<br />
-     * <br />
+     * to an object or {@link PreparedSafeCallChain#asFunction()} to get a reusable function.<br>
+     * <br>
      * After calling {@link PreparedSafeCallChain#on(Object)} you can get the final value with :
      * <ul>
      *     <li>{@link SafeCallChain#get()} to get the last object of the chain or null if one of the objects in the
@@ -180,7 +180,7 @@ public class SafeCall {
         }
 
         /**
-         * Converts this chain to a reusable function.<br />
+         * Converts this chain to a reusable function.<br>
          * This is useful when you want to use the chain in a stream for example.
          *
          * @return A function that applies this chain to any input, returning the result or null.
@@ -190,7 +190,7 @@ public class SafeCall {
         }
 
         /**
-         * Converts this chain to a reusable function.<br />
+         * Converts this chain to a reusable function.<br>
          * This is useful when you want to use the chain in a stream for example.
          *
          * @return A function that applies this chain to any input and returns an Optional result
@@ -200,7 +200,7 @@ public class SafeCall {
         }
 
         /**
-         * Converts this chain to a reusable function.<br />
+         * Converts this chain to a reusable function.<br>
          * This is useful when you want to use the chain in a stream for example.
          *
          * @param defaultValue The default value to return if the result is null
