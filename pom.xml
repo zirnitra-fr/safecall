@@ -42,6 +42,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.10.2</junit.version>
         <gpg.keyname>Github Zirnitra</gpg.keyname>
     </properties>
 
@@ -49,7 +50,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -98,11 +99,13 @@
                         </goals>
                         <configuration>
                             <keyname>${gpg.keyname}</keyname>
+                            <!-- Uncomment if you need specific GPG pinentry mode:
                             <gpgArguments>
-<!--                                <arg>&#45;&#45;pinentry-mode</arg>-->
-<!--                                <arg>loopback</arg>-->
-<!--                                <arg>&#45;&#45;use-agent</arg>-->
+                                <arg>&#45;&#45;pinentry-mode</arg>
+                                <arg>loopback</arg>
+                                <arg>&#45;&#45;use-agent</arg>
                             </gpgArguments>
+                            -->
                         </configuration>
                     </execution>
                 </executions>

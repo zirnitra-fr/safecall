@@ -11,4 +11,9 @@ public class Address {
 
     public String getStreet() { return street; }
     public String getCity() { return city; }
+
+    @Override
+    public String toString() {
+        return "Address{street='" + street + "', city='" + city + "'}";
+    }
 }

@@ -41,9 +41,9 @@ public class SafeCall {
      * <ul>
      *     <li>{@link SafeCallChain#get()} to get the last object of the chain or null if one of the objects in the
      *     chain is null</li>
-     *     <li>{@link SafeCallChain#getOrDefault(Object)} to get the last objet of the chain or a default value if
+     *     <li>{@link SafeCallChain#getOrDefault(Object)} to get the last object of the chain or a default value if
      *     one of the objects in the chain is null</li>
-     *     <li>{@link SafeCallChain#getOptional()} to get an Optional containing the last objet of the chain or if
+     *     <li>{@link SafeCallChain#getOptional()} to get an Optional containing the last object of the chain or if
      *     one of the objects in the chain is null</li>
      * </ul>
      *
@@ -67,11 +67,13 @@ public class SafeCall {
      * <ul>
      *     <li>{@link SafeCallChain#get()} to get the last object of the chain or null if one of the objects in the
      *     chain is null</li>
-     *     <li>{@link SafeCallChain#getOrDefault(Object)} to get the last objet of the chain or a default value if
+     *     <li>{@link SafeCallChain#getOrDefault(Object)} to get the last object of the chain or a default value if
      *     one of the objects in the chain is null</li>
-     *     <li>{@link SafeCallChain#getOptional()} to get an Optional containing the last objet of the chain or if
+     *     <li>{@link SafeCallChain#getOptional()} to get an Optional containing the last object of the chain or if
      *     one of the objects in the chain is null</li>
      * </ul>
+     * <br>
+     * Note: The clazz parameter is only used for type inference and is not stored.
      *
      * @param <T>         Type of the input object
      * @param clazz       Class of the input object
@@ -117,7 +119,7 @@ public class SafeCall {
         }
 
         /**
-         * @return an Optional containing the last objet of the chain or if one of the objects in the chain is null
+         * @return an Optional containing the last object of the chain, or Optional.empty if one of the objects in the chain is null
          */
         public Optional<T> getOptional() {
             return Optional.ofNullable(value);
@@ -127,7 +129,7 @@ public class SafeCall {
          * Gets the last object of the chain with a default fallback.
          *
          * @param defaultValue the default value if one of the objects in the chain is null
-         * @return the last objet of the chain or a default value if one of the objects in the chain is null
+         * @return the last object of the chain or a default value if one of the objects in the chain is null
          */
         public T getOrDefault(T defaultValue) {
             return value != null ? value : defaultValue;
@@ -146,6 +148,7 @@ public class SafeCall {
         @SuppressWarnings("unchecked")
         private PreparedSafeCallChain() {
             // Identity function as starting point
+            // Safe cast: at initialization, T and R are the same type (identity function)
             this.composedFunction = obj -> (R) obj;
         }
 
@@ -237,7 +240,7 @@ public class SafeCall {
         }
 
         /**
-         * @return an Optional containing the last objet of the chain or if one of the objects in the chain is null
+         * @return an Optional containing the last object of the chain, or Optional.empty if one of the objects in the chain is null
          */
         public Optional<T> getOptional() {
             return Optional.ofNullable(value);
@@ -247,7 +250,7 @@ public class SafeCall {
          * Gets the last object of the chain with a default fallback.
          *
          * @param defaultValue the default value if one of the objects in the chain is null
-         * @return the last objet of the chain or a default value if one of the objects in the chain is null
+         * @return the last object of the chain or a default value if one of the objects in the chain is null
          */
         public T getOrDefault(T defaultValue) {
             return value != null ? value : defaultValue;
