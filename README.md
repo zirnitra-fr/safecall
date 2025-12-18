@@ -12,6 +12,7 @@ To use SafeCall in your project, add the following dependency to your `pom.xml`:
 <dependency>
     <groupId>fr.zirnitra</groupId>
     <artifactId>safecall</artifactId>
+    <version>1.0</version>
 </dependency>
 ```
 
@@ -52,7 +53,7 @@ public class NestedObject{
 
 ### SafeCall#of
 
-The `SafeCall#of` method is used to safely call a method on an object. If the object is `null`, the method will return `null`. If the method throws an exception, the method will return `null`.
+The `SafeCall#of` method is used to safely call a method on an object. If the object is `null`, the method will return `null`. Note: Exceptions thrown by the called methods will propagate to the caller and are not caught by SafeCall.
 
 `of()` method takes the root instance on which method calls will be made in a chain, you can add calls with the `call()` method.
 NB : calling `call()` isn't mandatory before calling one of the three get methods.
